@@ -47,3 +47,32 @@ then the normal promotion to wider types no longer occurs as this is already the
 instance all the other rules apply and we do our best to keep the calculation correct. Programs may not use these
 special intermediary types to store (in classes) or return results and must narrow the result to one of the 64-bit
 integer types. They exist purely for the purposes of correct handling of computational intermediates.
+
+## Multiplication
+
+Multiplication follows the same widening rules as addition and subtraction, and all the same intermediate result rules.
+It is intended to be as safe as possible within the bounds of sanity.
+
+On narrowing due to truncating assignment, the overflow flag is generated from checking the high half of the
+result for being non-zero combined with the existing overflow flag of the intermediary.
+
+## Division
+
+The result of division is the same width as the input numerator, as the operation can only either narrow or stay
+the same width dependant on the denominator. This rule is however different for divisions involving an unsigned
+numerator and a signed denominator as this may change the sign of the result so must widen to the next widest
+signed type from the numerator to represent the result.
+
+This considers the effect of this example:
+
+```mangrove
+UInt8 a = 255
+auto b = a / -1
+```
+
+In this instance the answer must be -255 and so must be represented by a Int16 to preserve correctness. If the
+result is instead assigned back to an Int8 (it would be illegal to assign it back to a UInt8), truncation to -128 would
+occur and b.overflow set to true. This allows the detection of this occuring. If the programmer wishes to convert
+this back to a UInt8 ignoring sign, they may instead call the member function .asUnsigned() and truncate. This would
+result in the round-trip value of 1 as this is done assuming twos complement maths. Without truncation the user would
+see the answer 65281 (0xff01) in a UInt16.
