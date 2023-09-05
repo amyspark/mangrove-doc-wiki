@@ -1,21 +1,24 @@
 # Normal integer semantics
 
-Normal integers are defined as the signed integer types Int8, Int16, Int32, and Int64 + their unsigned counterparts UInt8, UInt16, UInt32, and UInt64.
+Normal integers are defined as the signed integer types Int8, Int16, Int32, and Int64 + their unsigned
+counterparts UInt8, UInt16, UInt32, and UInt64.
 
-Additionally there are two special intermediate representation types - Int128 and UInt128 - defined to make these semantics work. These additional types may only result from a calculation.
+Additionally there are two special intermediate representation types - Int128 and UInt128 - defined to
+make these semantics work. These additional types may only result from a calculation.
 
 ## Overflow/Underflow
 
-These types are defined as automatically sizing up and down to the next type on calculations that may underflow or overflow, maintaining signedness.
-The programmer may circumvent this by assigning the result back to the original width type, causing the generation of a new value for the type's
-overflow `Bool` member that can be checked up until the next mathematical operation. This will be illustrated further below.
+These types are defined as automatically sizing up and down to the next type on calculations that may
+underflow or overflow, maintaining signedness. The programmer may circumvent this by assigning the result
+back to the original width type, causing the generation of a new value for the type's overflow `Bool` member
+that can be checked up until the next mathematical operation. This will be illustrated further below.
 
 ## Addition and Subtraction
 
-Addition or subtraction of two N-bit types results in the generation of a new N*2-bit result.
-This allows cheap overflow-safe mathematics that scales appropriately.
-If the addition is between two types of different width, the compiler promotes the addition to the widest type used,
-preserving sign, and performs the addition at that new width.
+Addition or subtraction of two N-bit types results in the generation of a new N*2-bit result. This allows
+cheap overflow-safe mathematics that scales appropriately. If the addition is between two types of different
+width, the compiler promotes the addition to the widest type used, preserving sign, and performs the addition
+at that new width.
 
 The effect of this is illustrated by the following code:
 
