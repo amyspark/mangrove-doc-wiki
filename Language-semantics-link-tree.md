@@ -4,5 +4,5 @@ This is structured as a link tree, with a link off to a wiki page per semantic t
 
 ## Fundamental types semantics
 
-* Normal integer semantics
+* [Normal integer semantics](Normal-integer-semantics)
 * Modulo integer semantics
