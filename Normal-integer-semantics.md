@@ -109,3 +109,6 @@ Reinterpretation is achieved using the helper member functions .asUnsigned() (fo
 (for unsigned integers), which directly reinterprets the bits in the value as being of the same width and opposite
 signed-ness. That is to say that calling .asUnsigned() on an Int16 results in a UInt16 with identical bit representation,
 and calling .asSigned() on a UInt32 results in an Int32 with identical bit representation.
+
+If the programmer wishest to convert a value to a modulo integer, they may call the .toIntMod() member function
+to get a modulo integer of the same width and signedness.
