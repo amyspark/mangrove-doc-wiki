@@ -76,3 +76,33 @@ occur and b.overflow set to true. This allows the detection of this occuring. If
 this back to a UInt8 ignoring sign, they may instead call the member function .asUnsigned() and truncate. This would
 result in the round-trip value of 1 as this is done assuming twos complement maths. Without truncation the user would
 see the answer 65281 (0xff01) in a UInt16.
+
+## Bitwise operations
+
+Bitwise operations are only defined for unsigned types due to the problems inherrant in their operation on signed
+integers. If any of the inputs to the bitwise operation is signed, it must first be converted with .asUnsigned().
+
+The operation widens to the widest operand, and the result type is that widest type.
+
+This is illustrated in the following example:
+
+```mangrove
+Int8 a = -128
+Uint16 b = 0xf0f0
+auto c = a.asUnsigned() & b // This results in a UInt16 with value 240 (0x00f0)
+auto d = a.asUnsigned() ^ b // This results in a UInt16 with value 61455 (0xf00f)
+auto e = a ^ b // Error: a is a signed number and must be first converted to unsigned with .asUnsigned()
+```
+
+## Value reinterpretation
+
+There are two ways to convert between signed and unsigned - the first is via a cast, and the second is via
+reinterpretation.
+
+Casts must be done to an at-least wide enough type to preserve magnitude and sign (meanning that it is illegal
+to convert from signed to unsigned this way). This is so as to preserve all information in the value.
+
+Reinterpretation is achieved using the helper member functions .asUnsigned() (for signed integers) and .asSigned()
+(for unsigned integers), which directly reinterprets the bits in the value as being of the same width and opposite
+signed-ness. That is to say that calling .asUnsigned() on an Int16 results in a UInt16 with identical bit representation,
+and calling .asSigned() on a UInt32 results in an Int32 with identical bit representation.
