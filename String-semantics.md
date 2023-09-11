@@ -8,7 +8,20 @@ care about what the bytes within a path "string" mean, and generally do absolute
 
 ## Indexing
 
+Indexing into a string shall yeild a single CodePoint and is equivilant to iterating over the string for the
+same number of loops. Negative indexes, or indexes past the end of the string shall result in an invalid CodePoint
+being returned from the operation.
+
 ## Slicing
+
+Slicing a string works in a similar initial manner to indexing, but results in a StringView. The operation is defined
+by constructing an interval and truncating to bounds. That is, if a slice `[N:M]` is requested, `N` is first bounds
+checked and then `M` adjusted to land not after the end of the string to slice. This is allowed to result in a 0-length
+slice - this is to handle when `N` starts out past the end of the source String. If `M` would result in an over-long
+slice, it shall be adjusted to reference the end of the source string.
+
+The value `N` refers to the starting code point within the string from which to construct the slice, and the value
+`M` refers to ending code point using the interval `[N:M)` - that is, `N`-inclusive, `M`-exclusive.
 
 ## Conversion
 
