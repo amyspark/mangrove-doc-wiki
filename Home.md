@@ -9,3 +9,4 @@ This wiki build on top of the language grammar which is described and documented
 
 * [Normal integer semantics](Normal-integer-semantics)
 * [Modulo integer semantics](Modulo-integer-semantics)
+* [String semantics](String-semantics)
