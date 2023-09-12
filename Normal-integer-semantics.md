@@ -112,3 +112,12 @@ and calling .asSigned() on a UInt32 results in an Int32 with identical bit repre
 
 If the programmer wishest to convert a value to a modulo integer, they may call the .toIntMod() member function
 to get a modulo integer of the same width and signedness.
+
+## Conversion helper functions
+
+`String`s that should contain integers shall be convertable by calling the static member function `.fromString()` of the
+target integer type and these functions shall return a `Result` containing either a valid integer, or a conversion
+error from the stdlib errors library describing what went wrong in the conversion.
+
+The intended signature resulting is `function fromString(StringView value) -> Result<T, ConversionError>` where T is
+the target integer type
