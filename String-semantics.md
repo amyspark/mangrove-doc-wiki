@@ -8,8 +8,8 @@ care about what the bytes within a path "string" mean, and generally do absolute
 
 ## Indexing
 
-Indexing into a string shall yeild a single CodePoint and is equivilant to iterating over the string for the
-same number of loops. Negative indexes, or indexes past the end of the string shall result in an invalid CodePoint
+Indexing into a string shall yeild a single `CodePoint` and is equivalent to iterating over the string for the
+same number of loops. Negative indexes, or indexes past the end of the string shall result in an invalid `CodePoint`
 being returned from the operation.
 
 ## Slicing
@@ -25,7 +25,8 @@ The value `N` refers to the starting code point within the string from which to 
 
 ## Conversion
 
-The programmer may freely convert a `StringView` to a `String` (noting this must allocate) by constructive assignment (defining a new variable in scope with type `String` so as to invoke the `StringView` taking constructor for `String`).
+The programmer may freely convert a `StringView` to a `String` (noting this must allocate) by constructive assignment
+(defining a new variable in scope with type `String` so as to invoke the `StringView` taking constructor for `String`).
 The programmer may also freely convert a `String` to a `StringView` when, eg, passing the `String` as a function call
 parameter. The `StringView` object acts as a lifetime-bound reference to the originating `String` (or a substring
 thereof). It is an error to free-convert a `String` object to a `StringView` such as by passing a `String` result from

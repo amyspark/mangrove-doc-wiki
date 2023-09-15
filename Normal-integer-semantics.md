@@ -1,9 +1,9 @@
 # Normal integer semantics
 
-Normal integers are defined as the signed integer types Int8, Int16, Int32, and Int64 + their unsigned
-counterparts UInt8, UInt16, UInt32, and UInt64.
+Normal integers are defined as the signed integer types `Int8`, `Int16`, `Int32` and `Int64`, plus their unsigned
+counterparts `UInt8`, `UInt16`, `UInt32`, and `UInt64`.
 
-Additionally there are two special intermediate representation types - Int128 and UInt128 - defined to
+Additionally there are two special intermediate representation types - `Int128` and `UInt128` - defined to
 make these semantics work. These additional types may only result from a calculation.
 
 ## Overflow/Underflow
@@ -15,7 +15,7 @@ that can be checked up until the next mathematical operation. This will be illus
 
 ## Addition and Subtraction
 
-Addition or subtraction of two N-bit types results in the generation of a new N*2-bit result. This allows
+Addition or subtraction of two `N`-bit types results in the generation of a new `N*2`-bit result. This allows
 cheap overflow-safe mathematics that scales appropriately. If the addition is between two types of different
 width, the compiler promotes the addition to the widest type used, preserving sign, and performs the addition
 at that new width.
@@ -45,10 +45,10 @@ be set if the stack of intermediary calculations does result in an overflow some
 If the programmer ignores this, the compiler is allowed to optimise out the overflow tracking.
 
 Operations across type signedness first promotes the unsigned type to its next largest signed type, to preserve sign
-and magnitude, and the calculation proceeds as before. If an intermediary or result type ends up as Int128 or UInt128,
-then the normal promotion to wider types no longer occurs as this is already the widest type in the system. In this
-instance all the other rules apply and we do our best to keep the calculation correct. Programs may not use these
-special intermediary types to store (in classes) or return results and must narrow the result to one of the 64-bit
+and magnitude, and the calculation proceeds as before. If an intermediary or result type ends up as `Int128` or
+`UInt128`, then the normal promotion to wider types no longer occurs as this is already the widest type in the system.
+In this instance all the other rules apply and we do our best to keep the calculation correct. Programs may not use
+these special intermediary types to store (in classes) or return results and must narrow the result to one of the 64-bit
 integer types. They exist purely for the purposes of correct handling of computational intermediates.
 
 ## Multiplication
@@ -73,16 +73,16 @@ UInt8 a = 255
 auto b = a / -1
 ```
 
-In this instance the answer must be -255 and so must be represented by a Int16 to preserve correctness. If the
-result is instead assigned back to an Int8 (it would be illegal to assign it back to a UInt8), truncation to -128 would
-occur and b.overflow set to true. This allows the detection of this occuring. If the programmer wishes to convert
-this back to a UInt8 ignoring sign, they may instead call the member function .asUnsigned() and truncate. This would
+In this instance the answer must be -255 and so must be represented by a `Int16` to preserve correctness. If the
+result is instead assigned back to an `Int8` (it would be illegal to assign it back to a `UInt8`), truncation to -128
+would occur and `b.overflow` set to true. This allows the detection of this event. If the programmer wishes to convert
+this back to a `UInt8` ignoring sign, they may instead call the member function `.asUnsigned()` and truncate. This would
 result in the round-trip value of 1 as this is done assuming twos complement maths. Without truncation the user would
-see the answer 65281 (0xff01) in a UInt16.
+see the answer 65281 (0xff01) in a `UInt16`.
 
 ## Bitwise operations
 
-Bitwise operations are only defined for unsigned types due to the problems inherrant in their operation on signed
+Bitwise operations are only defined for unsigned types due to the problems inherent in their operation on signed
 integers. If any of the inputs to the bitwise operation is signed, it must first be converted with .asUnsigned().
 
 The operation widens to the widest operand, and the result type is that widest type.
@@ -105,19 +105,19 @@ reinterpretation.
 Casts must be done to an at-least wide enough type to preserve magnitude and sign (meanning that it is illegal
 to convert from signed to unsigned this way). This is so as to preserve all information in the value.
 
-Reinterpretation is achieved using the helper member functions .asUnsigned() (for signed integers) and .asSigned()
+Reinterpretation is achieved using the helper member functions `.asUnsigned()` (for signed integers) and `.asSigned()`
 (for unsigned integers), which directly reinterprets the bits in the value as being of the same width and opposite
-signed-ness. That is to say that calling .asUnsigned() on an Int16 results in a UInt16 with identical bit representation,
-and calling .asSigned() on a UInt32 results in an Int32 with identical bit representation.
+signedness. That is to say, calling `.asUnsigned()` on an `Int16` results in a `UInt16` with identical bitwise
+representation, and calling `.asSigned()` on a `UInt32` results in an `Int32` with identical bit representation.
 
-If the programmer wishest to convert a value to a modulo integer, they may call the .toIntMod() member function
+If the programmer wishest to convert a value to a modulo integer, they may call the `.toIntMod()` member function
 to get a modulo integer of the same width and signedness.
 
 ## Conversion helper functions
 
-`String`s that should contain integers shall be convertable by calling the static member function `.fromString()` of the
+`String`s that should contain integers shall be convertible by calling the static member function `.fromString()` of the
 target integer type and these functions shall return a `Result` containing either a valid integer, or a conversion
 error from the stdlib errors library describing what went wrong in the conversion.
 
-The intended signature resulting is `function fromString(StringView value) -> Result<T, ConversionError>` where T is
-the target integer type
+The intended signature resulting is `function fromString(StringView value) -> Result<T, ConversionError>` where `T` is
+the target integer type.
